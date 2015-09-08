@@ -1,0 +1,15 @@
+---
+server: irc.coldfront.net
+port: 6667
+SSL: false
+channels: ['#resistance']
+
+nicks: [resbot,resbot2,resbot3]
+password: 123123123
+
+# Auto-rejoin on kicks
+# TODO: Throttle this
+rejoin: true
+
+# Must be a regex
+prefix: /^!/
