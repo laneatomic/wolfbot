@@ -19,6 +19,7 @@ config = Psych.load_file(File.join(__dir__, 'configs', 'config.yml'))
 bot = Cinch::Bot.new do
   configure do |c|
     c.server = config['server']
+    c.port = config['port']
     c.channels = config['channels']
     c.nicks = config['nicks']
     c.password = config['password']
