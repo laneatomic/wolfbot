@@ -1,9 +1,13 @@
 ---
 server: irc.coldfront.net
-port: 6667
+port: 7778
+ssl: true
+verify_certs: false
 
-# SSL doesn't work yet. This is a placeholder config. :(
-SSL: false
+### Uncomment and modify the below options only if you need them for your network.
+# ca_path: /etc/ssl/certs
+# client_cert: /path/to/client/certificate
+
 channels: ['#werewolf', '#werewolfops']
 
 # If all nicks specified here are taken, it'll start appending underscores
