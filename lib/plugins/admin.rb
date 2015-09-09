@@ -44,12 +44,12 @@ class Admin
     end
 
     target_exists = false
-    m.channel.users.each do |user, modes|
+    Channel(@game_channel).users.each do |user, modes|
       target_exists = true if user == User(target)
     end
 
     m.reply "#{m.user.nick}: Reported #{target} for rules violations. Please see \#werewolfops."
-    Channel('#werewolfops').send "#{m.user.nick} has reported #{target} for rules violations. Please investigate.", notice = true
+    Channel(@admin_channel).send "#{m.user.nick} has reported #{target} for rules violations. Please investigate.", notice = true
     @reporters << m.user
     Timer(30) do
       @reporters.delete(m.user)
