@@ -5,8 +5,10 @@ This is a (sort of janky-written) IRC bot for managing kicks/bans/ops/admin task
 ## Setup
 1. Copy configs/config.yml.sample to configs/config.yml and edit with the correct parameters (nickname, password, etc.)
 2. For now, edit the following two variables in lib/plugins/admin.rb (lines 33-34):  
+    ```
     @game_channel = '#wolfbot'
     @admin_channel = '#wolfbotops'
+    ```
 2. Run `bundle install` to install the dependencies.
 3. Run the bot with `ruby wolfbot.rb`
 
