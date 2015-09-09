@@ -1,6 +1,6 @@
 # Wolfbot, an IRC administration bot
 
-This is a (sort of janky-written) IRC bot for managing kicks/bans/ops/admin tasks in #werewolf on irc.coldfront.net. It'd be useful for really any channel that you don't want to have regular ops in (such as our usage: a game of Werewolf where players are voiced and the room is moderated during a game. We don't want unrelated chat, even from ops). Currently it is hard-coded to use #werewolf and #werewolfops for its channels. Configuration coming Soon(tm).
+This is a (sort of janky-written) IRC bot for managing kicks/bans/ops/admin tasks in #werewolf on irc.coldfront.net. It'd be useful for really any channel that you don't want to have regular ops in (such as our usage: a game of Werewolf where players are voiced and the room is moderated during a game. We don't want unrelated chat, even from ops).
 
 ## Setup
 1. Copy configs/config.yml.sample to configs/config.yml and edit with the correct parameters (nickname, password, etc.)
