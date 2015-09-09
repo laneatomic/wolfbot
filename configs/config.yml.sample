@@ -1,6 +1,8 @@
 ---
 server: irc.coldfront.net
 port: 6667
+
+# SSL doesn't work yet. This is a placeholder config. :(
 SSL: false
 channels: ['#werewolf', '#werewolfops']
 
