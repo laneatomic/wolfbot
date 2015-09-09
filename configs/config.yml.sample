@@ -2,9 +2,10 @@
 server: irc.coldfront.net
 port: 6667
 SSL: false
-channels: ['#resistance']
+channels: ['#werewolf', '#werewolfops']
 
-nicks: [resbot,resbot2,resbot3]
+# If all nicks specified here are taken, it'll start appending underscores
+nicks: [Wolfbot,Wolfbot2,Wolfbot3]
 password: 123123123
 
 # Auto-rejoin on kicks

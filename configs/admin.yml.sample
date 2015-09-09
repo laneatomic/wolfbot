@@ -1,0 +1,8 @@
+---
+# Game and admin channels need quotes around them or else they're treated as comments
+game_channel: '#werewolf'
+admin_channel: '#werewolfops'
+
+greet: true
+greet_moderated_only: true
+greeting: "Welcome to #{@game_channel}, #{m.user.nick}! A game is currently in progress, but if you hang around you'll be able to play soon!"

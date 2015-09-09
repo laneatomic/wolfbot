@@ -17,9 +17,10 @@ class Admin
   match /help$/, method: :help
   match /warn (.+)$/, method: :warn
 
+  # Non-Admin commands (reporting players, etc.)
+  match /report (.+)$/, method: :report
   # Mess around with people who try to vote for wolfbot
   match /^!(v|vo|vot|vote)\swolfbot$/i, method: :vote, use_prefix: false
-  match /report (.+)$/, method: :report
 
   # Owner-only commands
   match /add_admin (.+)$/, method: :add_admin
@@ -30,8 +31,9 @@ class Admin
   def initialize(*args)
     super
 
-    @game_channel = '#werewolf'
-    @admin_channel = '#werewolfops'
+    @config = Psych.load_file(File.join(__dir__, '..', '..', 'configs', 'admin.yml'))
+    @game_channel = @config['game_channel']
+    @admin_channel = @config['admin_channel']
     @reporters = []
   end
 
@@ -59,8 +61,16 @@ class Admin
   end
 
   def listen(m)
-    return unless m.channel == Channel(@game_channel)
-    m.reply "Welcome to #{@game_channel}, #{m.user.nick}! A game is currently in progress, but if you hang around you'll be able to play soon!" if m.channel.moderated?
+    puts @config.inspect
+    puts m.inspect
+    # Weirdness: replies when self-joining. Added nick check to not trigger itself.
+    return unless m.channel == Channel(@game_channel) && @config['greet'] && m.user.nick != bot.nick
+    
+    if @config['greet_moderated_only']
+      m.reply "#{m.user.nick}: #{@config['greeting']}" if m.channel.moderated?
+    else
+      m.reply "#{m.user.nick}: #{@config['greeting']}"
+    end
   end
 
   def restart(m)

@@ -1,2 +1,4 @@
 .DS_Store
 configs/config.yml
+configs/admin.yml
+logs/pisg.log
