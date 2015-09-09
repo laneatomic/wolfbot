@@ -20,23 +20,23 @@ Wolfbot requires Ops in the game channel in order to function correctly. Wolfbot
 ### Admin channel
 Wolfbot doesn't require any special permissions in the Admin channel, however notices must be enabled for the channel (for the :report command). Wolfbot allows certain commands dependant on the access level of the user in the Admin channel.
 
-    Admin/Owner (+a/+q):
-    Admins and Owners on the channel have access to all commands, including the following special commands:
-    * `:enforce_opdown`: Removes all ops and halfops from users in the game channel
-    * `:restart`: Restarts the bot (after configuration changes, code update, etc)
+#### Admin/Owner (+a/+q):
+Admins and Owners on the channel have access to all commands, including the following special commands:
+* `:enforce_opdown`: Removes all ops and halfops from users in the game channel
+* `:restart`: Restarts the bot (after configuration changes, code update, etc)
 
-    Op (+o):
-    In addition to all Halfop commands, Ops have the following:
-    * `:opup`: Give ops to self in game channel
-    * `:opdown`: Remove ops from self in game channel
+#### Op (+o):
+In addition to all Halfop commands, Ops have the following:
+* `:opup`: Give ops to self in game channel
+* `:opdown`: Remove ops from self in game channel
 
-    Halfop (+h):
-    * `:warn <user>[ <message>]` Sends a signed warning to the game channel, highlighting the warned user, with optional message. This defaults to 'You are being warned for rules violations. Continue and we will take further action.' This prepends the targeted user and appends the warning Op.
-    * `:kick <user>[ <reason>]`: Kicks a user from the game channel with optional reason.
-    * `:ban <user>[ <hostmask>]`: Kicks and bans a user from the game channel with optional hostmask. Hostmask will default to full hostmask of the user. Ban mask becomes `*<user>*:*@<hostmask>`.
-    * `:listbans`: List all bans currently in place in the game channel.
+#### Halfop (+h):
+* `:warn <user>[ <message>]` Sends a signed warning to the game channel, highlighting the warned user, with optional message. This defaults to 'You are being warned for rules violations. Continue and we will take further action.' This prepends the targeted user and appends the warning Op.
+* `:kick <user>[ <reason>]`: Kicks a user from the game channel with optional reason.
+* `:ban <user>[ <hostmask>]`: Kicks and bans a user from the game channel with optional hostmask. Hostmask will default to full hostmask of the user. Ban mask becomes `*<user>*:*@<hostmask>`.
+* `:listbans`: List all bans currently in place in the game channel.
 
-    All users:
-    * `:report <username>`: This will report <username>, sending a notice to the admin channel. This command is ratelimited to once every 30 seconds per user to avoid abuse/spam.
+#### All users:
+* `:report <username>`: This will report <username>, sending a notice to the admin channel. This command is ratelimited to once every 30 seconds per user to avoid abuse/spam.
 
 All commands can be used anywhere the bot can hear (either channel or via query).
