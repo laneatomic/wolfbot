@@ -39,6 +39,6 @@ In addition to all Halfop commands, Ops have the following:
 * `:listbans`: List all bans currently in place in the game channel.
 
 ##### All users:
-* `:report <username>`: This will report <username>, sending a notice to the admin channel. This command is ratelimited to once every 30 seconds per user to avoid abuse/spam.
+* `:report <username>`: This will report \<username\>, sending a notice to the admin channel. This command is ratelimited to once every 30 seconds per user to avoid abuse/spam.
 
 All commands can be used anywhere the bot can hear (either channel or via query).
