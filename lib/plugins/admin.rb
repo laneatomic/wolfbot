@@ -80,11 +80,12 @@ class Admin
   end
 
   def op_up(m)
-    Channel(@game_channel).halfop(m.user) if halfop?(m)
+    Channel(@game_channel).mode("+h #{m.user.nick}") if halfop?(m)
     Channel(@game_channel).op(m.user) if admin?(m)
   end
 
   def op_down(m)
+    Channel(@game_channel).mode("-h #{m.user.nick}") if halfop?(m)
     Channel(@game_channel).deop(m.user) if admin?(m)
   end
 
