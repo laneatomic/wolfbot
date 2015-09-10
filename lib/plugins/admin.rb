@@ -19,6 +19,7 @@ class Admin
 
   # Non-Admin commands (reporting players, etc.)
   match /report (.+)$/, method: :report
+  match /stats$/, method: :stats
   # Mess around with people who try to vote for wolfbot
   match /^!(v|vo|vot|vote)\swolfbot$/i, method: :vote, use_prefix: false
 
@@ -54,6 +55,10 @@ class Admin
     Timer(30) do
       @reporters.delete(m.user)
     end
+  end
+
+  def stats(m)
+    m.reply "Stats can be found at #{@config['stats_url']}"
   end
 
   def vote(m)
