@@ -35,9 +35,6 @@ class Admin
     @game_channel = @config['game_channel']
     @admin_channel = @config['admin_channel']
     @reporters = []
-
-    @dnsbl = DNSBL::Client.new
-    @dnsbl.add_dnsbl("")
   end
 
   def report(m, target)
