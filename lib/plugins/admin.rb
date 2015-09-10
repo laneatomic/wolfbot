@@ -1,4 +1,5 @@
 require 'cinch'
+require 'dnsbl/client'
 
 # Hello plugin
 class Admin
@@ -35,6 +36,9 @@ class Admin
     @game_channel = @config['game_channel']
     @admin_channel = @config['admin_channel']
     @reporters = []
+
+    @dnsbl = DNSBL::Client.new
+    @dnsbl.add_dnsbl("")
   end
 
   def report(m, target)
@@ -61,8 +65,6 @@ class Admin
   end
 
   def listen(m)
-    puts @config.inspect
-    puts m.inspect
     # Weirdness: replies when self-joining. Added nick check to not trigger itself.
     return unless m.channel == Channel(@game_channel) && @config['greet'] && m.user.nick != bot.nick
     
