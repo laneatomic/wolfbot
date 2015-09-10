@@ -1,5 +1,4 @@
 require 'cinch'
-require 'dnsbl/client'
 
 # Hello plugin
 class Admin
