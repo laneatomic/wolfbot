@@ -153,8 +153,8 @@ class Admin
     m.user.send ":ban <username>[ <hostmask>] - Bans the specified user from #{@game_channel}. Defaults to target's full hostmask if none specified."
     m.user.send ':unban <banmask> - Unbans the banmask specified in :listbans.'
     m.user.send ":listbans - See all currently banned banmasks in #{@game_channel}."
-    m.user.send ":opup - Give yourself @ (ops) in #{@game_channel} - To be used if bot can't handle the issue." if admin?(m)
-    m.user.send ":opdown - Remove your @ (ops) in #{@game_channel}" if admin?(m)
+    m.user.send ":opup - Give yourself %/@ (halfop/ops) in #{@game_channel} - To be used if bot can't handle the issue."
+    m.user.send ":opdown - Remove your %/@ (halfop/ops) in #{@game_channel}"
     m.user.send 'Available owner commands are:' if owner?(m)
     m.user.send ":enforce_opdown - Remove @ (ops) and % (halfops) from all users other than the bots in #{@game_channel}." if owner?(m)
     m.user.send ':restart - Restart the bot.' if owner?(m)
