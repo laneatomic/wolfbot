@@ -192,7 +192,7 @@ class Admin
       "$inc" => {warnings: 1}
     }
 
-    coll.update({nickname: nickname}, doc, upsert: true)
+    coll.update_one({nickname: nickname}, doc, upsert: true)
   end
 
   def insert_report(nickname, reporter)
