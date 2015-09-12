@@ -1,8 +1,10 @@
 require 'cinch'
+require 'mongo'
 
 # Hello plugin
 class Admin
   include Cinch::Plugin
+  include Mongo
 
   listen_to :join
 
@@ -36,6 +38,8 @@ class Admin
     @game_channel = @config['game_channel']
     @admin_channel = @config['admin_channel']
     @reporters = []
+
+    @db = MongoClient.new(@config['db_host'], @config['db_port']).db('admin_plugin')
   end
 
   def report(m, target)
@@ -165,6 +169,8 @@ class Admin
     m.user.send ':restart - Restart the bot.' if owner?(m)
   end
 
+  private
+
   # Access Levels checking
   def admin?(m)
     return Channel(@admin_channel).opped?(m.user) || owner?(m)
@@ -177,4 +183,18 @@ class Admin
   def halfop?(m)
     return Channel(@admin_channel).half_opped?(m.user) || admin?(m) || owner?(m)
   end
+
+  def insert_warning(nickname, admin)
+    coll = @db.collection('warnings')
+    doc = {
+      admin: admin,
+      last_warned: Time.now.getutc.to_i,
+      $inc: {warnings: 1}
+    }
+
+    coll.update({nickname: nickname}, doc, upsert: true)
+  end
+
+  def insert_report(nickname, reporter)
+    coll = @db.collection('reports')
 end
