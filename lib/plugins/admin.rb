@@ -187,9 +187,10 @@ class Admin
   def insert_warning(nickname, admin)
     coll = @db[:warnings]
     doc = {
-      admin: admin,
-      last_warned: Time.now.getutc.to_i,
-      "$inc" => {warnings: 1}
+      '$set' => { admin: admin,
+                  last_warned: Time.now.getutc.to_i
+                },
+      "$inc" => { warnings: 1 }
     }
 
     coll.update_one({nickname: nickname}, doc, upsert: true)
