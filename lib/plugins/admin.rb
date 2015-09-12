@@ -189,7 +189,7 @@ class Admin
     doc = {
       admin: admin,
       last_warned: Time.now.getutc.to_i,
-      $inc: {warnings: 1}
+      "$inc" => {warnings: 1}
     }
 
     coll.update({nickname: nickname}, doc, upsert: true)
