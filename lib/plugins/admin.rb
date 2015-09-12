@@ -39,7 +39,7 @@ class Admin
     @admin_channel = @config['admin_channel']
     @reporters = []
 
-    @db = MongoClient.new(@config['db_host'], @config['db_port']).db('admin_plugin')
+    @db = Mongo::Client.new(["#{@config['db_host']}:#{@config['db_port']}"], database: 'admin_plugin')
   end
 
   def report(m, target)
@@ -104,6 +104,7 @@ class Admin
     reason += " - #{m.user.nick}"
     return unless halfop?(m) || !Channel(@game_channel).users.key?(User(target))
     Channel(@game_channel).send("#{target}: #{reason}")
+    insert_warning(target, m.user.nick)
   end
 
   def kick(m, args)
@@ -147,7 +148,6 @@ class Admin
       half_ops << user if user_array.include?('h') && user != bot.nick && user.nick.downcase != 'werewolf'
     end
     return if ops.empty? && half_ops.empty?
-    puts 'Made it here.'
     o = 'o' * ops.length unless ops.empty?
     h = 'h' * half_ops.length unless half_ops.empty?
     Channel(@game_channel).mode("-#{o} #{ops.join(' ')}") unless ops.empty?
