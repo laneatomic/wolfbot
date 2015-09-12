@@ -198,5 +198,13 @@ class Admin
 
   def insert_report(nickname, reporter)
     coll = @db[:reports]
+    doc = {
+      '$set' => { reporter: reporter,
+                  last_warned: Time.now.getutc.to_i
+                },
+      "$inc" => { warnings: 1 }
+    }
+
+    coll.update_one({nickname: nickname}, doc, upsert: true)
   end
 end
