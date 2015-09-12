@@ -3,6 +3,9 @@
 game_channel: '#werewolf'
 admin_channel: '#werewolfops'
 
+db_host: 127.0.0.1
+db_port: 27017
+
 # Stats site if you're parsing logs/pisg.loog
 stats_url: http://werewolf.drunknerds.net/stats/
 
