@@ -1,5 +1,6 @@
 require 'cinch'
 require 'mongo'
+require File.join(__dir__,'admin','admin_sinatra.rb')
 
 # Hello plugin
 class Admin
@@ -200,7 +201,7 @@ class Admin
     coll = @db[:reports]
     doc = {
       '$set' => { reporter: reporter,
-                  last_warned: Time.now.getutc.to_i
+                  last_reported: Time.now.getutc.to_i
                 },
       "$inc" => { warnings: 1 }
     }
