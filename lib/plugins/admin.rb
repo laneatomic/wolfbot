@@ -197,4 +197,5 @@ class Admin
 
   def insert_report(nickname, reporter)
     coll = @db.collection('reports')
+  end
 end
