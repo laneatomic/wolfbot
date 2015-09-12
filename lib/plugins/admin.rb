@@ -185,7 +185,7 @@ class Admin
   end
 
   def insert_warning(nickname, admin)
-    coll = @db.collection('warnings')
+    coll = @db.[:warnings]
     doc = {
       admin: admin,
       last_warned: Time.now.getutc.to_i,
@@ -196,6 +196,6 @@ class Admin
   end
 
   def insert_report(nickname, reporter)
-    coll = @db.collection('reports')
+    coll = @db[:reports]
   end
 end
