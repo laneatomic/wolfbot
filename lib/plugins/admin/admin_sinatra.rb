@@ -2,6 +2,8 @@ require 'sinatra'
 require 'mongo'
 require 'psych'
 
+run Sinatra::Application
+
 @config = Psych.load_file(File.join(__dir__, '..', '..', '..', 'configs', 'admin.yml'))
 @db = Mongo::Client.new(["#{@config['db_host']}:#{@config['db_port']}"], database: 'admin_plugin')
 #admin_sinatra.rb
