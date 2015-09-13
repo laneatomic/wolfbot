@@ -24,6 +24,8 @@ class Admin
   match /stats$/, method: :stats
   # Mess around with people who try to vote for wolfbot
   match /^!(v|vo|vot|vote)\swolfbot$/i, method: :vote, use_prefix: false
+  match /\(╯°□°\）╯︵ ┻━┻/i, method: :tableflip, use_prefix: false
+  match /┻━┻︵ \\\(°□°\)\/ ︵ ┻━┻/, method: :tableflip, use_prefix: false
 
   # Owner-only commands
   match /add_admin (.+)$/, method: :add_admin
@@ -40,6 +42,10 @@ class Admin
     @reporters = []
 
     @db = Mongo::Client.new(["#{@config['db_host']}:#{@config['db_port']}"], database: 'admin_plugin')
+  end
+
+  def tableflip(m)
+    m.reply "┬─┬ノ(º_ºノ) Calm down now, #{m.user.nick}."
   end
 
   def report(m, target)
