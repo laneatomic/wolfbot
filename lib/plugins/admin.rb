@@ -1,8 +1,10 @@
 require 'cinch'
+require 'mongo'
 
 # Hello plugin
 class Admin
   include Cinch::Plugin
+  include Mongo
 
   listen_to :join
 
@@ -36,6 +38,8 @@ class Admin
     @game_channel = @config['game_channel']
     @admin_channel = @config['admin_channel']
     @reporters = []
+
+    @db = Mongo::Client.new(["#{@config['db_host']}:#{@config['db_port']}"], database: 'admin_plugin')
   end
 
   def report(m, target)
@@ -51,6 +55,7 @@ class Admin
 
     m.reply "#{m.user.nick}: Reported #{target} for rules violations. Please see \#werewolfops."
     Channel(@admin_channel).send "#{m.user.nick} has reported #{target} for rules violations. Please investigate.", notice = true
+    insert_report(target, m.user.nick)
     @reporters << m.user
     Timer(30) do
       @reporters.delete(m.user)
@@ -96,10 +101,20 @@ class Admin
 
   def warn(m, args)
     target, reason = args.split(/ /, 2)
+
+    target_exists = false
+
+    Channel(@game_channel).users.each do |user, modes|
+      target_exists = true if user == User(target)
+    end
+
+    return unless target_exists
+
     reason ||= 'You are being warned for rules violations. Continue and we will take further action.'
     reason += " - #{m.user.nick}"
     return unless halfop?(m) || !Channel(@game_channel).users.key?(User(target))
     Channel(@game_channel).send("#{target}: #{reason}")
+    insert_warning(target, m.user.nick)
   end
 
   def kick(m, args)
@@ -115,6 +130,7 @@ class Admin
     banmask = "*#{target}*!*@#{hostmask}"
     Channel(@game_channel).ban("#{banmask}")
     kick(m, "#{target} Banned by the bot.")
+    insert_ban(target, banmask, m.user.nick)
   end
 
   def unban(m, banmask)
@@ -124,6 +140,7 @@ class Admin
       return
     end
     Channel(@game_channel).unban(banmask)
+    delete_ban(banmask)
   end
 
   def list_bans(m)
@@ -143,7 +160,6 @@ class Admin
       half_ops << user if user_array.include?('h') && user != bot.nick && user.nick.downcase != 'werewolf'
     end
     return if ops.empty? && half_ops.empty?
-    puts 'Made it here.'
     o = 'o' * ops.length unless ops.empty?
     h = 'h' * half_ops.length unless half_ops.empty?
     Channel(@game_channel).mode("-#{o} #{ops.join(' ')}") unless ops.empty?
@@ -165,6 +181,8 @@ class Admin
     m.user.send ':restart - Restart the bot.' if owner?(m)
   end
 
+  private
+
   # Access Levels checking
   def admin?(m)
     return Channel(@admin_channel).opped?(m.user) || owner?(m)
@@ -176,5 +194,47 @@ class Admin
 
   def halfop?(m)
     return Channel(@admin_channel).half_opped?(m.user) || admin?(m) || owner?(m)
+  end
+
+  def insert_warning(nickname, admin)
+    coll = @db[:warnings]
+    doc = {
+      '$set' => { admin: admin,
+                  last_warned: Time.now.getutc.to_i
+                },
+      "$inc" => { warnings: 1 }
+    }
+
+    coll.update_one({nickname: nickname}, doc, upsert: true)
+  end
+
+  def insert_report(nickname, reporter)
+    coll = @db[:reports]
+    doc = {
+      '$set' => { reporter: reporter,
+                  last_reported: Time.now.getutc.to_i
+                },
+      "$inc" => { reports: 1 }
+    }
+
+    coll.update_one({nickname: nickname}, doc, upsert: true)
+  end
+
+  def insert_ban(nickname, banmask, admin)
+    coll = @db[:bans]
+    doc = {
+      '$set' => {
+                  banmask: banmask,
+                  banned: Time.now.getutc.to_i,
+                  admin: admin
+                }
+    }
+
+    coll.update_one({nickname: nickname}, doc, upsert: true)
+  end
+
+  def delete_ban(banmask)
+    coll = @db[:bans]
+    coll.delete_one(banmask: banmask)
   end
 end

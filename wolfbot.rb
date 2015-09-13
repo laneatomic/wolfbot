@@ -2,6 +2,7 @@
 
 require 'cinch'
 require 'psych'
+require 'sinatra'
 require_relative File.join(__dir__, 'lib', 'loggers', 'zcbot_logger.rb')
 
 Dir[File.join(__dir__, 'lib', 'plugins', '*.rb')].each { |file| require file }
@@ -40,3 +41,4 @@ end
 bot.loggers << Cinch::Logger::ZcbotLogger.new(File.open(File.join('logs', 'pisg.log'), 'a'))
 
 bot.start
+run Sinatra::Application
