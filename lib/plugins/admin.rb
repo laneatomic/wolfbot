@@ -28,7 +28,7 @@ class Admin
   match /┻━┻︵ \\\(°□°\)\/ ︵ ┻━┻/, method: :tableflip, use_prefix: false
   match /\(ノಠ益ಠ\)ノ彡┻━┻/i, method: :tableflip, use_prefix: false
   match /\(ノ ゜Д゜\)ノ ︵ ┻━┻/, method: :tableflip, use_prefix: false
-  match /\(╯°Д°\）╯︵ \/\(.□\s*.\s*\)/, method: :emojiflip, use_prefix: false
+  match /\(╯°Д°\）╯︵\s*\/\(\.□\s*\.\s*\)/, method: :emojiflip, use_prefix: false
 
   # Owner-only commands
   match /add_admin (.+)$/, method: :add_admin
