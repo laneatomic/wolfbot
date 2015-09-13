@@ -1,6 +1,5 @@
 require 'cinch'
 require 'mongo'
-require File.join(__dir__,'admin','admin_sinatra.rb')
 
 # Hello plugin
 class Admin
@@ -56,6 +55,7 @@ class Admin
 
     m.reply "#{m.user.nick}: Reported #{target} for rules violations. Please see \#werewolfops."
     Channel(@admin_channel).send "#{m.user.nick} has reported #{target} for rules violations. Please investigate.", notice = true
+    insert_report(target, m.user.nick)
     @reporters << m.user
     Timer(30) do
       @reporters.delete(m.user)
@@ -121,6 +121,7 @@ class Admin
     banmask = "*#{target}*!*@#{hostmask}"
     Channel(@game_channel).ban("#{banmask}")
     kick(m, "#{target} Banned by the bot.")
+    insert_ban(target, banmask, m.user.nick)
   end
 
   def unban(m, banmask)
@@ -130,6 +131,7 @@ class Admin
       return
     end
     Channel(@game_channel).unban(banmask)
+    delete_ban(banmask)
   end
 
   def list_bans(m)
@@ -203,9 +205,27 @@ class Admin
       '$set' => { reporter: reporter,
                   last_reported: Time.now.getutc.to_i
                 },
-      "$inc" => { warnings: 1 }
+      "$inc" => { reports: 1 }
     }
 
     coll.update_one({nickname: nickname}, doc, upsert: true)
+  end
+
+  def insert_ban(nickname, banmask, admin)
+    coll = @db[:bans]
+    doc = {
+      '$set' => {
+                  banmask: banmask,
+                  banned: Time.now.getutc.to_i,
+                  admin: admin
+                }
+    }
+
+    coll.update_one({nickname: nickname}, doc, upsert: true)
+  end
+
+  def delete_ban(banmask)
+    coll = @db[:bans]
+    coll.delete_one(banmask: banmask)
   end
 end
