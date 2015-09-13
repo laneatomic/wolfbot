@@ -101,7 +101,7 @@ class Admin
 
   def warn(m, args)
     target, reason = args.split(/ /, 2)
-    return unless halfop?(m) || !Channel(@game_channel).users.key?(User(target))
+    return unless halfop?(m) && Channel(@game_channel).users.key?(User(target))
 
     reason ||= 'You are being warned for rules violations. Continue and we will take further action.'
     reason += " - #{m.user.nick}"
