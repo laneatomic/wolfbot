@@ -106,7 +106,7 @@ class Admin
     reason ||= 'You are being warned for rules violations. Continue and we will take further action.'
     reason += " - #{m.user.nick}"
     Channel(@game_channel).send("#{target}: #{reason}")
-    insert_warning(target, m.user.nick)
+    insert_warning(target.downcase, m.user.nick)
   end
 
   def kick(m, args)
@@ -122,7 +122,7 @@ class Admin
     banmask = "*#{target}*!*@#{hostmask}"
     Channel(@game_channel).ban("#{banmask}")
     kick(m, "#{target} Banned by the bot.")
-    insert_ban(target, banmask, m.user.nick)
+    insert_ban(target.downcase, banmask.downcase, m.user.nick)
   end
 
   def unban(m, banmask)
@@ -132,7 +132,7 @@ class Admin
       return
     end
     Channel(@game_channel).unban(banmask)
-    delete_ban(banmask)
+    delete_ban(banmask.downcase)
   end
 
   def list_bans(m)
