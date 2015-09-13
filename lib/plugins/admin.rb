@@ -28,7 +28,6 @@ class Admin
   match /┻━┻︵ \\\(°□°\)\/ ︵ ┻━┻/, method: :tableflip, use_prefix: false
   match /\(ノಠ益ಠ\)ノ彡┻━┻/i, method: :tableflip, use_prefix: false
   match /\(ノ ゜Д゜\)ノ ︵ ┻━┻/, method: :tableflip, use_prefix: false
-  match /\(╯°Д°\）╯︵\s*\/\(\.□\s*\.\s*\)/, method: :emojiflip, use_prefix: false
 
   # Owner-only commands
   match /add_admin (.+)$/, method: :add_admin
@@ -54,10 +53,6 @@ class Admin
       "Please stop breaking tables"
     ]
     m.reply "┬─┬ノ(º_ºノ) #{replies.sample}, #{m.user.nick}."
-  end
-
-  def emojiflip(m)
-    m.reply ".('□'.)ノ(º_ºノ) #{replies.sample}, #{m.user.nick}."
   end
 
   def report(m, target)
