@@ -26,6 +26,9 @@ class Admin
   match /^!(v|vo|vot|vote)\swolfbot$/i, method: :vote, use_prefix: false
   match /\(╯°□°\）╯︵ ┻━┻/i, method: :tableflip, use_prefix: false
   match /┻━┻︵ \\\(°□°\)\/ ︵ ┻━┻/, method: :tableflip, use_prefix: false
+  match /\(ノಠ益ಠ\)ノ彡┻━┻/i, method: :tableflip, use_prefix: false
+  match /\(ノ ゜Д゜\)ノ ︵ ┻━┻/, method: :tableflip, use_prefix: false
+  match /︵ \/\(.□. \\\）/, method: :emojiflip, use_prefix: false
 
   # Owner-only commands
   match /add_admin (.+)$/, method: :add_admin
@@ -45,7 +48,16 @@ class Admin
   end
 
   def tableflip(m)
-    m.reply "┬─┬ノ(º_ºノ) Calm down now, #{m.user.nick}."
+    replies = [
+      "Calm down now",
+      "Relax",
+      "Please stop breaking tables"
+    ]
+    m.reply "┬─┬ノ(º_ºノ) #{replies.sample}, #{m.user.nick}."
+  end
+
+  def emojiflip(m)
+    m.reply ".('□'.)ノ(º_ºノ) #{replies.sample}, #{m.user.nick}."
   end
 
   def report(m, target)
