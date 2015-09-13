@@ -101,18 +101,10 @@ class Admin
 
   def warn(m, args)
     target, reason = args.split(/ /, 2)
-
-    target_exists = false
-
-    Channel(@game_channel).users.each do |user, modes|
-      target_exists = true if user == User(target)
-    end
-
-    return unless target_exists
+    return unless halfop?(m) || !Channel(@game_channel).users.key?(User(target))
 
     reason ||= 'You are being warned for rules violations. Continue and we will take further action.'
     reason += " - #{m.user.nick}"
-    return unless halfop?(m) || !Channel(@game_channel).users.key?(User(target))
     Channel(@game_channel).send("#{target}: #{reason}")
     insert_warning(target, m.user.nick)
   end
