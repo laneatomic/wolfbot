@@ -101,6 +101,15 @@ class Admin
 
   def warn(m, args)
     target, reason = args.split(/ /, 2)
+
+    target_exists = false
+
+    Channel(@game_channel).users.each do |user, modes|
+      target_exists = true if user == User(target)
+    end
+
+    return unless target_exists
+
     reason ||= 'You are being warned for rules violations. Continue and we will take further action.'
     reason += " - #{m.user.nick}"
     return unless halfop?(m) || !Channel(@game_channel).users.key?(User(target))
