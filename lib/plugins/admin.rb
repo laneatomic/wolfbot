@@ -42,6 +42,7 @@ class Admin
     @game_channel = @config['game_channel']
     @admin_channel = @config['admin_channel']
     @reporters = []
+    @spam_timer = false
 
     @db = Mongo::Client.new(["#{@config['db_host']}:#{@config['db_port']}"], database: 'admin_plugin')
   end
@@ -52,7 +53,11 @@ class Admin
       "Relax",
       "Please stop breaking tables"
     ]
-    m.reply "┬─┬ノ(º_ºノ) #{replies.sample}, #{m.user.nick}."
+    m.reply "┬─┬ノ(º_ºノ) #{replies.sample}, #{m.user.nick}." unless @spam_timer == true
+    @spam_timer = true
+    Timer(30) do
+      @spam_timer = false
+    end
   end
 
   def report(m, target)
