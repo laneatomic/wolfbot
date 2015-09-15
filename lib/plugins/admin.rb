@@ -125,7 +125,7 @@ class Admin
   def kick(m, args)
     target, reason = args.split(/ /, 2)
     reason ||= 'Kicked by the bot.'
-    Channel(@game_channel).kick(target, reason) if admin?(m)
+    Channel(@game_channel).kick(target, reason) if halfop?(m)
   end
 
   def ban(m, args)
