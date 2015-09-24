@@ -60,19 +60,23 @@ class Admin
     end
   end
 
-  def report(m, target)
+  def report(m, args)
     if @reporters.include?(m.user)
       m.reply "#{m.user}: Please wait 30 seconds between reports."
       return
     end
+
+    target, reason = args.split(/ /, 2)
 
     target_exists = false
     Channel(@game_channel).users.each do |user, modes|
       target_exists = true if user == User(target)
     end
 
-    m.reply "#{m.user.nick}: Reported #{target} for rules violations. Please see \#werewolfops."
-    Channel(@admin_channel).send "#{m.user.nick} has reported #{target} for rules violations. Please investigate.", notice = true
+    reason ||= "rules violations."
+
+    m.reply "#{m.user.nick}: Reported #{target}: #{reason} Please see \#werewolfops."
+    Channel(@admin_channel).send "#{m.user.nick} has reported #{target}: #{reason} - Please investigate.", notice = true
     insert_report(target, m.user.nick)
     @reporters << m.user
     Timer(30) do
@@ -129,7 +133,11 @@ class Admin
 
   def kick(m, args)
     target, reason = args.split(/ /, 2)
-    reason ||= 'Kicked by the bot.'
+    if reason.nil?
+      reason = "Kick requested by #{m.user.nick}"
+    else
+      reason += " - Requested by #{m.user.nick}"
+    end
     Channel(@game_channel).kick(target, reason) if halfop?(m)
   end
 
