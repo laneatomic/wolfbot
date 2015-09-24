@@ -79,7 +79,7 @@ class Admin
 
     m.reply "#{m.user.nick}: Reported #{target}: #{reason} - Please see \#werewolfops."
     Channel(@admin_channel).send "#{m.user.nick} has reported #{target}: #{reason} - Please investigate.", notice = true
-    insert_report(target, m.user.nick)
+    insert_report(target, reason, m.user.nick)
     @reporters << m.user
     Timer(30) do
       @reporters.delete(m.user)
@@ -228,11 +228,12 @@ class Admin
     coll.update_one({nickname: nickname}, doc, upsert: true)
   end
 
-  def insert_report(nickname, reporter)
+  def insert_report(nickname, reason, reporter)
     coll = @db[:reports]
     doc = {
       '$set' => { reporter: reporter,
-                  last_reported: Time.now.getutc.to_i
+                  last_reported: Time.now.getutc.to_i,
+                  reason: reason
                 },
       "$inc" => { reports: 1 }
     }
