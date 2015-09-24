@@ -73,6 +73,8 @@ class Admin
       target_exists = true if user == User(target)
     end
 
+    return unless target_exists
+
     reason ||= "rules violations."
 
     m.reply "#{m.user.nick}: Reported #{target}: #{reason} Please see \#werewolfops."
