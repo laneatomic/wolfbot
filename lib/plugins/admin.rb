@@ -77,7 +77,7 @@ class Admin
 
     reason ||= "rules violations."
 
-    m.reply "#{m.user.nick}: Reported #{target}: #{reason} Please see \#werewolfops."
+    m.reply "#{m.user.nick}: Reported #{target}: #{reason} - Please see \#werewolfops."
     Channel(@admin_channel).send "#{m.user.nick} has reported #{target}: #{reason} - Please investigate.", notice = true
     insert_report(target, m.user.nick)
     @reporters << m.user
